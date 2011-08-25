@@ -82,7 +82,8 @@ function normalizeURL($url)
 	    // Remove directory index
 		$defaultIndexes = array("/default\.aspx/" => "default.aspx", "/default\.asp/"  => "default.asp",
 	                            "/index\.html/"   => "index.html",   "/index\.htm/"    => "index.htm",
-	                            "/default\.html/" => "default.html", "/default\.htm/"  => "default.htm");
+	                            "/default\.html/" => "default.html", "/default\.htm/"  => "default.htm",
+	                            "/index\.php/"    => "index.php",    "/index\.jsp/"    => "index.jsp");
 		foreach($defaultIndexes as $index => $strip)
 		{
 			if(preg_match($index, $url['path']))
@@ -125,14 +126,17 @@ function normalizeURL($url)
 		unset($url['fragment']);
 	
 	// Sort GET params alphabetically, not because the RFC requires it but because it's cool!
-	if(isset($url['query']) && preg_match("/&/", $url['query']))
+	if(isset($url['query']))
 	{
-		$s = explode("&", $url['query']);
-		$url['query'] = "";
-		sort($s);
-		foreach($s as $z)
-			$url['query'] .= "{$z}&";
-		$url['query'] = preg_replace("/&\Z/", "", $url['query']);
+		if(preg_match("/&/", $url['query']))
+		{
+			$s = explode("&", $url['query']);
+			$url['query'] = "";
+			sort($s);
+			foreach($s as $z)
+				$url['query'] .= "{$z}&";
+			$url['query'] = preg_replace("/&\Z/", "", $url['query']);
+		}
 		$newUrl .= "?{$url['query']}";
 	}
 
