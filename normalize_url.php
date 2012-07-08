@@ -108,7 +108,7 @@ function normalizeURL($url)
 				$new_path = preg_replace( '!/([^/]+)$!x', '', $new_path );
 			}
 			elseif(preg_match('!^(\.|\.\.)$!x', $url['path']))
-				$url['path'] = preg_replace('!^(\.|\.\.)$!x', $url['path']);
+				$url['path'] = preg_replace('!^(\.|\.\.)$!x', '', $url['path']);
 			else
 			{
 				if(preg_match('!(/*[^/]*)!x', $url['path'], $matches))
